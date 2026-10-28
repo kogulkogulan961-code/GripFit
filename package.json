@@ -1,0 +1,16 @@
+{
+  "name": "gripfit",
+  "version": "1.0.0",
+  "private": true,
+  "description": "GripFit: earn your scroll with AI-verified workouts",
+  "scripts": {
+    "setup": "node scripts/setup.js",
+    "open": "npx cap open android"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.1.0",
+    "@capacitor/cli": "^6.1.0",
+    "@capacitor/core": "^6.1.0",
+    "@mediapipe/pose": "0.5.1675469404"
+  }
+}

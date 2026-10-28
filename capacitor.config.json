@@ -1,0 +1,7 @@
+{
+  "appId": "com.gripfit.app",
+  "appName": "GripFit",
+  "webDir": "www",
+  "backgroundColor": "#0b0d12",
+  "android": { "allowMixedContent": false }
+}
