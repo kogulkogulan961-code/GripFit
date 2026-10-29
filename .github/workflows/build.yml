@@ -26,18 +26,18 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
+   
+           
       - name: Prepare Web Assets
-        
-        run: |      
-
-          mkdir -p www
-          if [ -f "index.html" ]; then
-            cp index.html www/
-          elif [ -f "public/index.html" ]; then
-            cp public/index.html www/
-          else
-            echo "<html><body><h1>GripFit</h1></body></html>" > www/index.html
+        run: |
+          if [ ! -f "www/index.html" ]; then
+            echo "Error: www/index.html not found!"
+            exit 1
           fi
+
+          
+ 
+          
 
           
 
