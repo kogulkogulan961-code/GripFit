@@ -23,12 +23,10 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Install Dependencies
-        run: npm install
 
-   
-           
-            - name: Prepare Web Assets
+     
+        
+      - name: Prepare Web Assets
         run: |
           mkdir -p www
           if [ -f "index.html" ]; then
@@ -38,8 +36,9 @@ jobs:
             exit 1
           fi
 
+        
 
-          
+         
  
           
 
