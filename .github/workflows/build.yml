@@ -26,11 +26,15 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Build Web Assets
+      - name: Prepare Web Assets
         run: |
-          npm run build || true
           mkdir -p www
-          if [ -d "dist" ] && [ "$(ls -A dist)" ]; then cp -r dist/* www/; fi
+          if [ -d "public" ] && [ "$(ls -A public)" ]; then
+            cp -r public/* www/
+          elif [ -f "index.html" ]; then
+            cp index.html www/
+          fi
+          find . -maxdepth 1 -name "*.html" -exec cp {} www/ \;
 
       - name: Add Android Platform
         run: npx cap add android || true
@@ -49,4 +53,5 @@ jobs:
         with:
           name: app-debug
           path: android/app/build/outputs/apk/debug/app-debug.apk
+
 
