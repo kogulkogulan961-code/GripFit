@@ -1,57 +1,18 @@
-name: Build Android APK
+{
+  "name": "gripfit",
+  "version": "1.0.0",
+  "private": true,
+  "description": "GripFit: earn your scroll with AI-verified workouts",
+  "scripts": {
+    "setup": "node scripts/setup.js",
+    "open": "npx cap open android"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.1.0",
+    "@capacitor/cli": "^6.1.0",
+    "@capacitor/core": "^6.1.0",
+    "@mediapipe/pose": "0.5.1675469404"
+  }
+}
 
-on:
-  push:
-    branches: [ "main" ]
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
-      - name: Install Dependencies
-        run: npm install
-
-      - name: Prepare Web Assets
-        run: |
-          mkdir -p www
-          if [ -d "public" ] && [ "$(ls -A public)" ]; then
-            cp -r public/* www/
-          elif [ -f "index.html" ]; then
-            cp index.html www/
-          fi
-          # ஒருவேளை index.html இல்லனா ரூட்ல இருக்கிறதை காப்பி பண்ண
-          find . -maxdepth 1 -name "*.html" -exec cp {} www/ \;
-
-      - name: Add Android Platform
-        run: npx cap add android || true
-
-      - name: Sync Capacitor
-        run: npx cap sync android
-
-      - name: Build APK
-        run: |
-          cd android
-          chmod +x gradlew
-          ./gradlew assembleDebug
-
-      - name: Upload APK Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-debug
-          path: android/app/build/outputs/apk/debug/app-debug.apk
 
