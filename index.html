@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>GripFit</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#0b0d12;--card:#151922;--line:#232a38;--tx:#f2f5fa;--mu:#8b95a8;--ac:#c6ff3d;--ac2:#ff4d6d;color-scheme:dark}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+html,body{background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;min-height:100%}
+button{font:inherit;color:inherit;border:0;cursor:pointer}
+.app{max-width:480px;margin:0 auto;padding:18px 18px 90px;min-height:100vh}
+.screen{display:none;animation:in .35s ease}.screen.on{display:block}
+@keyframes in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.logo{font-weight:900;font-size:28px;letter-spacing:-1px}.logo b{color:var(--ac)}
+.hero{margin:50px 0 26px}.hero h1{font-size:34px;line-height:1.1;letter-spacing:-1px;margin:14px 0 8px}.hero p{color:var(--mu)}
+.field{width:100%;background:var(--card);border:1px solid var(--line);color:var(--tx);border-radius:14px;padding:15px;font:inherit;margin-bottom:10px;outline:0}
+.field:focus{border-color:var(--ac)}
+.btn{width:100%;padding:15px;border-radius:14px;font-weight:700;background:var(--ac);color:#0b0d12;transition:transform .15s}
+.btn:active{transform:scale(.97)}.btn.alt{background:var(--card);color:var(--tx);border:1px solid var(--line);display:flex;gap:10px;align-items:center;justify-content:center;margin-bottom:10px}
+.or{text-align:center;color:var(--mu);font-size:13px;margin:14px 0}
+.link{background:none;color:var(--ac);font-weight:600;margin-top:14px;width:100%}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.avatar{width:38px;height:38px;border-radius:50%;background:var(--card);border:1px solid var(--line)}
+.quote{background:linear-gradient(135deg,#1b2a10,#151922);border:1px solid #2c3d18;border-radius:18px;padding:16px;font-size:15px;line-height:1.4;margin-bottom:14px}
+.quote small{display:block;color:var(--ac);margin-top:6px;font-weight:700}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:22px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 10px;text-align:center}
+.stat b{display:block;font-size:24px;color:var(--ac)}.stat span{font-size:11px;color:var(--mu)}
+h2{font-size:17px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+.row{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;margin-bottom:10px;animation:in .3s}
+.ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-size:22px}
+.row .nm{flex:1;font-weight:600}.row .nm small{display:block;color:var(--mu);font-weight:400;font-size:12px}
+.open{background:#232a38;border-radius:10px;padding:8px 12px;font-size:13px;font-weight:600}
+.del{background:none;color:var(--mu);font-size:18px;padding:4px 8px}
+.sw{width:46px;height:26px;border-radius:20px;background:#2a3140;position:relative;transition:.2s;flex:none}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:.2s}
+.sw.on{background:var(--ac)}.sw.on::after{left:23px;background:#0b0d12}
+.fab{position:fixed;right:max(18px,calc(50% - 222px));bottom:calc(22px + env(safe-area-inset-bottom,0px));width:62px;height:62px;border-radius:50%;background:var(--ac);color:#0b0d12;font-size:34px;font-weight:300;box-shadow:0 8px 28px #c6ff3d55;z-index:5;display:none;animation:pulse 2.4s infinite}
+@keyframes pulse{50%{box-shadow:0 8px 40px #c6ff3daa}}
+.modal{position:fixed;inset:0;background:#000b;display:none;align-items:flex-end;z-index:20}
+.modal.on{display:flex}.sheet{background:var(--card);width:100%;max-width:480px;margin:0 auto;border-radius:24px 24px 0 0;padding:22px;animation:in .3s}
+.emo{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.emo button{background:var(--bg);border:1px solid var(--line);border-radius:10px;font-size:22px;padding:6px 10px}.emo button.s{border-color:var(--ac)}
+.lock{position:fixed;inset:0;background:var(--bg);z-index:30;display:none;overflow:auto;padding:calc(16px + env(safe-area-inset-top,0px)) 18px 24px}
+.lock.on{display:block;animation:in .3s}.lock .in{max-width:480px;margin:0 auto}
+.seg{display:flex;background:var(--card);border-radius:14px;padding:4px;margin:12px 0}.seg button{flex:1;padding:10px;border-radius:11px;background:none;font-weight:700;color:var(--mu)}.seg button.on{background:var(--ac);color:#0b0d12}
+.cam{position:relative;border-radius:22px;overflow:hidden;background:#000;aspect-ratio:3/4;border:1px solid var(--line)}
+.cam video,.cam canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}
+.cam .msg{position:absolute;left:0;right:0;bottom:0;padding:10px;text-align:center;font-size:13px;background:#000a;z-index:2}
+.big{text-align:center;margin:14px 0}.big b{font-size:72px;line-height:1;color:var(--ac)}.big span{font-size:28px;color:var(--mu)}
+.bar{height:8px;background:var(--card);border-radius:8px;overflow:hidden;margin-bottom:14px}.bar i{display:block;height:100%;width:0;background:var(--ac);transition:width .3s}
+
+.toast{position:fixed;top:calc(14px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);background:var(--ac);color:#0b0d12;font-weight:700;padding:10px 18px;border-radius:20px;z-index:50;display:none}
+.note{color:var(--mu);font-size:12px;text-align:center;margin-top:14px;line-height:1.4}
+</style></head>
+<body><div class="app">
+
+<section class="screen on" id="auth">
+ <div class="hero"><div class="logo">Grip<b>Fit</b></div><h1>Earn your scroll.</h1><p>Do the reps. Unlock the app. Take back your time.</p></div>
+ <button class="btn alt" onclick="login('Google')"><b style="color:#4285f4">G</b> Continue with Google</button>
+ <button class="btn alt" onclick="login('Facebook')"><b style="color:#1877f2">f</b> Continue with Facebook</button>
+ <div class="or">— or with email —</div>
+ <input class="field" id="em" type="email" placeholder="Email" autocomplete="email">
+ <input class="field" id="pw" type="password" placeholder="Password" autocomplete="current-password">
+ <button class="btn" id="goBtn" onclick="emailLogin()">Log in</button>
+ <button class="link" id="swBtn" onclick="toggleMode()">New here? Create an account</button>
+ <p class="note">Demo build: sign-in is simulated on this device. Connect a real backend (Firebase, Supabase) for production.</p>
+</section>
+
+<section class="screen" id="home">
+ <div class="top"><div class="logo">Grip<b>Fit</b></div><button class="del" onclick="logout()">Log out</button></div>
+ <div class="quote" id="quote"></div>
+ <div class="stats">
+  <div class="stat"><b id="sReps">0</b><span>Total reps</span></div>
+  <div class="stat"><b id="sDur">0m</b><span>Workout time</span></div>
+  <div class="stat"><b id="sSave">0m</b><span>Screen time saved</span></div>
+ </div>
+ <h2>Locked apps <span style="font-size:12px;color:var(--mu);font-weight:400" id="cnt"></span></h2>
+ <div id="list"></div>
+ <p class="note">Tap “Open” to simulate launching a locked app. A browser can’t block other apps on its own; a native wrapper (Capacitor + usage-access APIs) would trigger this same lock screen.</p>
+</section>
+</div>
+
+<button class="fab" id="fab" aria-label="Add app" onclick="openAdd()">+</button>
+
+<div class="modal" id="addM" onclick="if(event.target===this)closeAdd()"><div class="sheet">
+ <h2>Add an app to lock</h2>
+ <input class="field" id="newName" placeholder="App name (e.g. Reddit)" maxlength="20">
+ <div class="emo" id="emo"></div>
+ <button class="btn" onclick="addApp()">Add &amp; lock</button>
+</div></div>
+
+<div class="lock" id="lock"><div class="in">
+ <div style="display:flex;justify-content:space-between;align-items:center"><div class="logo">🔒 <span id="lApp"></span></div><button class="del" onclick="closeLock()">✕</button></div>
+ <p style="color:var(--mu);margin-top:4px" id="lSub"></p>
+ <div class="seg"><button id="mPush" class="on" onclick="setEx('push')">Push-ups</button><button id="mSq" onclick="setEx('squat')">Squats</button></div>
+ <div class="cam" id="cam"><video id="vid" playsinline muted></video><canvas id="cv"></canvas><div class="msg" id="camMsg">Starting camera…</div></div>
+ <div class="big"><b id="rc">0</b><span> / <span id="goal">10</span></span></div>
+ <div class="bar"><i id="pb"></i></div>
+ <button class="btn alt" id="retryBtn" onclick="startCam()" style="display:none">Retry camera &amp; AI</button>
+ <p class="note">Reps count only when the AI sees real movement. No camera, no unlock.</p>
+</div></div>
+<div class="toast" id="toast"></div>
+
+<script src="mediapipe/pose.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const QUOTES=[["The only bad workout is the one you didn’t do.","Unknown"],["Discipline is choosing what you want most over what you want now.","Abraham Lincoln"],["Your feed will wait. Your body won’t.","GripFit"],["Strength doesn’t come from scrolling.","GripFit"],["Don’t count the reps. Make the reps count.","Muhammad Ali"],["Earn it. Then scroll.","GripFit"]];
+const DEF=[{n:"Instagram",e:"📸",c:"#e1306c"},{n:"YouTube",e:"▶️",c:"#ff0000"},{n:"TikTok",e:"🎵",c:"#25f4ee"}];
+const EMOJIS=["💬","🐦","👻","📺","🎮","🛒","📰","🎧","👽","📌"];
+const GOAL=10, SAVE_PER_REP=1.5; // minutes of scrolling estimated saved per rep
+let S={user:null,apps:DEF.map(a=>({...a,on:true})),reps:0,secs:0,unlocks:0};
+let signup=false,pickedEmo="💬",curApp=null,ex="push",reps=0,startT=0,downT=0,camTok=0,stage="up",stream=null,pose=null,running=false,poseOK=false,lastSend=0;
+
+function load(){try{const v=JSON.parse(localStorage.getItem("gripfit")||"null");if(v)S=v}catch(e){}}
+function save(){try{localStorage.setItem("gripfit",JSON.stringify(S))}catch(e){}}
+function toast(t){const el=$("toast");el.textContent=t;el.style.display="block";clearTimeout(el._t);el._t=setTimeout(()=>el.style.display="none",2200)}
+
+/* Auth */
+function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("on",s.id===id));$("fab").style.display=id==="home"?"block":"none"}
+function login(p){S.user={name:p+" user",via:p};save();enter()}
+function emailLogin(){const e=$("em").value.trim(),p=$("pw").value;
+ if(!/^\S+@\S+\.\S+$/.test(e))return toast("Enter a valid email");
+ if(p.length<6)return toast("Password needs 6+ characters");
+ S.user={name:e.split("@")[0],via:"email"};save();enter()}
+function toggleMode(){signup=!signup;$("goBtn").textContent=signup?"Create account":"Log in";$("swBtn").textContent=signup?"Have an account? Log in":"New here? Create an account"}
+function logout(){S.user=null;save();show("auth")}
+function enter(){show("home");render()}
+
+/* Dashboard */
+function render(){
+ const q=QUOTES[Math.floor(Math.random()*QUOTES.length)];
+ $("quote").innerHTML="“"+q[0]+"”<small>— "+q[1]+"</small>";
+ $("sReps").textContent=S.reps;
+ $("sDur").textContent=Math.round(S.secs/60)+"m";
+ $("sSave").textContent=Math.round(S.reps*SAVE_PER_REP)+"m";
+ $("cnt").textContent=S.apps.filter(a=>a.on).length+" active";
+ $("list").innerHTML=S.apps.map((a,i)=>`<div class="row"><div class="ic" style="background:${a.c||"#2a3140"}33">${a.e}</div>
+ <div class="nm">${esc(a.n)}<small>${a.on?"Locked · "+GOAL+" reps to open":"Unlocked"}</small></div>
+ <button class="open" onclick="launch(${i})">Open</button>
+ <div class="sw ${a.on?"on":""}" onclick="tg(${i})"></div><button class="del" onclick="rm(${i})">✕</button></div>`).join("")||'<p class="note">No apps yet. Tap + to add one.</p>';
+}
+function esc(s){return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+function tg(i){S.apps[i].on=!S.apps[i].on;save();render()}
+function rm(i){S.apps.splice(i,1);save();render()}
+function openAdd(){$("newName").value="";$("emo").innerHTML=EMOJIS.map(e=>`<button class="${e===pickedEmo?"s":""}" onclick="pickEmo('${e}')">${e}</button>`).join("");$("addM").classList.add("on")}
+function closeAdd(){$("addM").classList.remove("on")}
+function pickEmo(e){pickedEmo=e;openAddKeep()}
+function openAddKeep(){const v=$("newName").value;openAdd();$("newName").value=v}
+function addApp(){const n=$("newName").value.trim();if(!n)return toast("Name your app");
+ S.apps.push({n,e:pickedEmo,c:"#"+Math.floor(Math.random()*0xffffff).toString(16).padStart(6,"0"),on:true});save();closeAdd();render();toast(n+" is now locked 🔒")}
+
+/* Lock + workout */
+function launch(i){const a=S.apps[i];if(!a.on){toast("Opening "+a.n+"… (unlocked)");return}
+ curApp=a;$("lApp").textContent=a.n;$("lSub").textContent="Complete "+GOAL+" reps to unlock "+a.n+".";
+ reps=0;stage="up";startT=Date.now();updRep();$("lock").classList.add("on");startCam()}
+function setEx(e){ex=e;stage="up";$("mPush").classList.toggle("on",e==="push");$("mSq").classList.toggle("on",e==="squat")}
+function updRep(){$("rc").textContent=reps;$("goal").textContent=GOAL;$("pb").style.width=Math.min(100,reps/GOAL*100)+"%"}
+function addRep(){reps++;S.reps++;if(navigator.vibrate)try{navigator.vibrate(40)}catch(e){}
+ updRep();if(reps>=GOAL)done()}
+function done(){S.secs+=Math.round((Date.now()-startT)/1000);S.unlocks++;save();const n=curApp.n;closeLock(true);render();toast("🔓 "+n+" unlocked — nice work!")}
+function closeLock(ok){if(!ok&&reps>0){S.secs+=Math.round((Date.now()-startT)/1000);save();render()}stopCam();$("lock").classList.remove("on")}
+
+/* Camera + pose */
+async function startCam(){
+ const tok=++camTok;stopCam();$("retryBtn").style.display="none";$("camMsg").textContent="Starting camera…";
+ try{stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"user",width:640,height:480},audio:false});
+  const v=$("vid");v.srcObject=stream;await v.play();
+ }catch(e){fail("Camera access is required to unlock. Allow permission, then retry.");return}
+ try{
+  if(!window.Pose)throw 0;
+  if(!pose){pose=new Pose({locateFile:f=>"mediapipe/"+f});
+   pose.setOptions({modelComplexity:0,smoothLandmarks:true,minDetectionConfidence:.5,minTrackingConfidence:.5});pose.onResults(onPose)}
+  $("camMsg").textContent="Loading AI model…";running=true;poseOK=false;loop();
+  setTimeout(()=>{if(tok===camTok&&!poseOK&&running)fail("AI model couldn’t load. Retry. The app stays locked.")},15000);
+ }catch(e){fail("AI tracking unavailable. Retry to keep going. The app stays locked.")}
+}
+function stopCam(){running=false;if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}}
+function fail(m){stopCam();$("camMsg").textContent=m;$("retryBtn").style.display="block"}
+async function loop(){if(!running)return;const v=$("vid");
+ if(v.readyState>=2&&performance.now()-lastSend>60){lastSend=performance.now();try{await pose.send({image:v})}catch(e){}}
+ requestAnimationFrame(loop)}
+const CONN=[[11,12],[11,13],[13,15],[12,14],[14,16],[11,23],[12,24],[23,24],[23,25],[25,27],[24,26],[26,28]];
+function ang(a,b,c){const r=Math.atan2(c.y-b.y,c.x-b.x)-Math.atan2(a.y-b.y,a.x-b.x);let d=Math.abs(r*180/Math.PI);return d>180?360-d:d}
+function onPose(r){
+ const cv=$("cv"),v=$("vid");cv.width=v.videoWidth;cv.height=v.videoHeight;const g=cv.getContext("2d");g.clearRect(0,0,cv.width,cv.height);
+ const L=r.poseLandmarks;if(!L){$("camMsg").textContent="Step back so your body is in frame";return}
+ poseOK=true;
+ g.lineWidth=4;g.strokeStyle="#c6ff3d";CONN.forEach(([a,b])=>{if(L[a].visibility>.4&&L[b].visibility>.4){g.beginPath();g.moveTo(L[a].x*cv.width,L[a].y*cv.height);g.lineTo(L[b].x*cv.width,L[b].y*cv.height);g.stroke()}});
+ g.fillStyle="#ff4d6d";L.forEach((p,i)=>{if(i>10&&p.visibility>.4){g.beginPath();g.arc(p.x*cv.width,p.y*cv.height,6,0,7);g.fill()}});
+ // pick the more visible body side
+ const side=(L[11].visibility+L[13].visibility+L[15].visibility+L[23].visibility+L[25].visibility)>=(L[12].visibility+L[14].visibility+L[16].visibility+L[24].visibility+L[26].visibility)?[11,13,15,23,25,27]:[12,14,16,24,26,28];
+ const [s,e,w,h,k,a]=side.map(i=>L[i]);
+ let angle,down,up;
+ if(ex==="push"){if(Math.min(s.visibility,e.visibility,w.visibility,h.visibility,a.visibility)<.5){$("camMsg").textContent="Place phone side-on, full body visible";return}
+  if(Math.abs(s.y-a.y)>Math.abs(s.x-a.x)*.6){$("camMsg").textContent="Get into push-up position";stage="up";return}
+  angle=ang(s,e,w);down=95;up=155}
+ else{if(Math.min(s.visibility,h.visibility,k.visibility,a.visibility)<.5){$("camMsg").textContent="Stand side-on, head to feet visible";return}
+  if(Math.abs(s.x-a.x)>Math.abs(s.y-a.y)*.7){$("camMsg").textContent="Stand upright to squat";stage="up";return}
+  angle=ang(h,k,a);down=105;up=160}
+ $("camMsg").textContent=(ex==="push"?"Elbow ":"Knee ")+Math.round(angle)+"° · "+(stage==="up"?"go down":"push up");
+ const now=performance.now();
+ if(stage==="up"&&angle<down){stage="down";downT=now}
+ else if(stage==="down"&&angle>up){stage="up";if(now-downT>=700)addRep();else $("camMsg").textContent="Too fast. Control the movement"}
+}
+load();if(S.user)enter();else show("auth");
+</script>
+</body></html>
